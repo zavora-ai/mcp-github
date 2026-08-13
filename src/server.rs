@@ -130,7 +130,7 @@ pub struct GitHubServer {
     pub client: Arc<GitHubClient>,
 }
 
-#[tool_router(server_handler)]
+#[tool_router]
 impl GitHubServer {
     #[tool(description = "Search GitHub repositories by query")]
     async fn search_repositories(&self, Parameters(i): Parameters<SearchRepositoriesInput>) -> String {
@@ -483,4 +483,11 @@ impl HealthCheck for GitHubServer {
             latency_ms: Some(1),
         }
     }
+}
+
+adk_mcp_sdk::mcp_2026_server! {
+    server: GitHubServer,
+    task_tools: ["get_workflow_run"],
+    approval_tools: ["create_pull_request_review", "create_issue", "update_issue", "list_releases", "create_release_note", "create_pull_request", "merge_pull_request", "add_pr_comment", "create_branch", "delete_branch", "create_or_update_file", "create_repository", "delete_repository", "create_release", "git_add"],
+    cache_ttl_ms: 60_000,
 }

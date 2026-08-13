@@ -1,28 +1,28 @@
 server_id = "mcp_github"
-display_name = "GitHub"
+display_name = "Github"
 version = "1.3.0"
 domain = "developer-tools"
-sdk_version = "0.1.0"
+sdk_version = "0.2.0"
 risk_level = "high"
 writes_allowed = "gated"
 transports = ["stdio"]
 credentials = ["vault://github-token"]
-governance_gates = []
+governance_gates = ["mrtr_approval"]
 environments = ["development", "staging", "production"]
 
 [[tools]]
-name = "search_repos"
+name = "search_repositories"
 description = "Search GitHub repositories by query"
 risk_class = "read_only"
 requires_approval = false
-credential_bindings = ["vault://github-token"]
+credential_bindings = []
 
 [[tools]]
-name = "get_repo"
+name = "get_repository"
 description = "Get repository details including default branch, language, and stats"
 risk_class = "read_only"
 requires_approval = false
-credential_bindings = ["vault://github-token"]
+credential_bindings = []
 
 [[tools]]
 name = "list_branches"
@@ -60,32 +60,46 @@ requires_approval = false
 credential_bindings = ["vault://github-token"]
 
 [[tools]]
-name = "get_pr_diff"
+name = "get_pull_request_diff"
 description = "Get the diff for a pull request"
 risk_class = "read_only"
 requires_approval = false
-credential_bindings = ["vault://github-token"]
+credential_bindings = []
 
 [[tools]]
-name = "create_review"
-description = "Create a review on a pull request"
-risk_class = "external_write"
+name = "create_pull_request_review"
+description = "Create a review on a pull request (APPROVE, REQUEST_CHANGES, or COMMENT)"
+risk_class = "file_code_write"
 requires_approval = true
-credential_bindings = ["vault://github-token"]
+credential_bindings = []
 
 [[tools]]
 name = "create_issue"
 description = "Create a new issue in a repository"
 risk_class = "external_write"
-requires_approval = false
+requires_approval = true
 credential_bindings = ["vault://github-token"]
 
 [[tools]]
 name = "update_issue"
 description = "Update an existing issue (title, body, state, labels)"
 risk_class = "external_write"
-requires_approval = false
+requires_approval = true
 credential_bindings = ["vault://github-token"]
+
+[[tools]]
+name = "list_releases"
+description = "List releases for a repository"
+risk_class = "file_code_write"
+requires_approval = true
+credential_bindings = []
+
+[[tools]]
+name = "create_release_note"
+description = "Generate release notes between two tags"
+risk_class = "internal_write"
+requires_approval = true
+credential_bindings = []
 
 [[tools]]
 name = "create_pull_request"
@@ -102,22 +116,162 @@ requires_approval = true
 credential_bindings = ["vault://github-token"]
 
 [[tools]]
+name = "list_pr_comments"
+description = "List comments on a pull request or issue"
+risk_class = "read_only"
+requires_approval = false
+credential_bindings = []
+
+[[tools]]
+name = "add_pr_comment"
+description = "Add a comment to a pull request or issue"
+risk_class = "file_code_write"
+requires_approval = true
+credential_bindings = []
+
+[[tools]]
 name = "create_branch"
 description = "Create a new branch from a SHA"
 risk_class = "external_write"
-requires_approval = false
+requires_approval = true
 credential_bindings = ["vault://github-token"]
 
 [[tools]]
 name = "delete_branch"
 description = "Delete a branch"
-risk_class = "destructive"
+risk_class = "file_code_write"
 requires_approval = true
 credential_bindings = ["vault://github-token"]
 
 [[tools]]
-name = "delete_repo"
-description = "Delete a repository (DANGEROUS — irreversible)"
-risk_class = "destructive"
+name = "list_commits"
+description = "List commits for a repository or branch"
+risk_class = "read_only"
+requires_approval = false
+credential_bindings = []
+
+[[tools]]
+name = "get_commit"
+description = "Get details of a specific commit"
+risk_class = "read_only"
+requires_approval = false
+credential_bindings = []
+
+[[tools]]
+name = "list_workflow_runs"
+description = "List GitHub Actions workflow runs"
+risk_class = "read_only"
+requires_approval = false
+credential_bindings = []
+
+[[tools]]
+name = "get_workflow_run"
+description = "Get details of a specific workflow run"
+risk_class = "read_only"
+requires_approval = false
+credential_bindings = []
+
+[[tools]]
+name = "create_or_update_file"
+description = "Create or update a file in a repository"
+risk_class = "file_code_write"
 requires_approval = true
-credential_bindings = ["vault://github-token"]
+credential_bindings = []
+
+[[tools]]
+name = "list_directory"
+description = "List directory contents in a repository"
+risk_class = "read_only"
+requires_approval = false
+credential_bindings = []
+
+[[tools]]
+name = "create_repository"
+description = "Create a new GitHub repository (personal or org)"
+risk_class = "file_code_write"
+requires_approval = true
+credential_bindings = []
+
+[[tools]]
+name = "fork_repository"
+description = "Fork a repository to your account"
+risk_class = "read_only"
+requires_approval = false
+credential_bindings = []
+
+[[tools]]
+name = "delete_repository"
+description = "Delete a repository (DANGEROUS — irreversible)"
+risk_class = "file_code_write"
+requires_approval = true
+credential_bindings = []
+
+[[tools]]
+name = "list_tags"
+description = "List tags for a repository"
+risk_class = "read_only"
+requires_approval = false
+credential_bindings = []
+
+[[tools]]
+name = "create_release"
+description = "Create a GitHub release with tag, name, and body"
+risk_class = "internal_write"
+requires_approval = true
+credential_bindings = []
+
+[[tools]]
+name = "git_clone"
+description = "Clone a git repository to local filesystem"
+risk_class = "read_only"
+requires_approval = false
+credential_bindings = []
+
+[[tools]]
+name = "git_init"
+description = "Initialize a new git repository"
+risk_class = "read_only"
+requires_approval = false
+credential_bindings = []
+
+[[tools]]
+name = "git_status"
+description = "Get git status of a repository"
+risk_class = "read_only"
+requires_approval = false
+credential_bindings = []
+
+[[tools]]
+name = "git_add"
+description = "Stage files for commit (git add)"
+risk_class = "file_code_write"
+requires_approval = true
+credential_bindings = []
+
+[[tools]]
+name = "git_commit"
+description = "Create a git commit with a message"
+risk_class = "read_only"
+requires_approval = false
+credential_bindings = []
+
+[[tools]]
+name = "git_push"
+description = "Push commits to remote"
+risk_class = "read_only"
+requires_approval = false
+credential_bindings = []
+
+[[tools]]
+name = "git_tag"
+description = "Create a git tag"
+risk_class = "read_only"
+requires_approval = false
+credential_bindings = []
+
+[[tools]]
+name = "git_log"
+description = "Show git log (recent commits)"
+risk_class = "read_only"
+requires_approval = false
+credential_bindings = []
