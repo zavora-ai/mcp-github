@@ -215,7 +215,7 @@ Required scopes: `repo`, `read:org`, `workflow` (for Actions tools).
 ```toml
 server_id = "mcp_github"
 display_name = "GitHub MCP"
-version = "1.2.1"
+version = "1.4.0"
 domain = "developer"
 risk_level = "medium"
 writes_allowed = "gated"

@@ -1,6 +1,6 @@
 server_id = "mcp_github"
 display_name = "Github"
-version = "1.3.0"
+version = "1.4.0"
 domain = "developer-tools"
 sdk_version = "0.2.0"
 risk_level = "high"
